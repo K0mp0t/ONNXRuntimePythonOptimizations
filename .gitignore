@@ -1,0 +1,12 @@
+*
+*/*
+
+!.gitignore
+!README.md
+!ericmodel.onnx
+!ericmodel_opt.onnx
+!ericmodel_sim.onnx
+!comparison_table.jpg
+!complicated_model_before.jpg
+!complicated_model_after.jpg
+!**.ipynb
