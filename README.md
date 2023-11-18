@@ -1,27 +1,30 @@
 # ONNX model optimization tools overview
 
-## OnnxOptimizer
+Optimization tools make DNN models faster and less resources consuming. There aren't much ONNX models optimization tools (I've managed to find only two actually), DNN optimization 
+itself has very few ready-to-use tools, so we'll try to get as much as we can from ones described below.
+
+## ONNXOptimizer
 
 [source](https://github.com/onnx/optimizer)
 
-Basically, reduces model "length": this optimization tool reduces number of operations during model inference.
+Basically, reduces model "length": this optimization tool reduces number of operations during model inference making it faster and less resources consuming.
+I've splitted OnnxOptimizer implemented optimizations into two major categories.
 
-### Implemented optimizations may be split into two main categories:
-#### Elimination optimizations
+### Elimination optimizations
 
 Eliminates unnessesary operations like dropout, these operations are not used during inference,
 so could be removed without any NN stress. Lots of operations are being replaced during this optimizations by combinations 
 of simpler ops (e.g. flatten, pad, concat, etc.).
 Some other operations like if-operators with constant condition or monotone argmax also are being removed.
 
-#### Fuse optimizations
+### Fuse optimizations
 
 Fuse optimizations reduce number of operations by merging: 
 * add convolution bias to its weight;
 * integrate pre-calculated batch normalization (for trained model obviously) into convolution weights;
 * merge cosecutive operations.
 
-## OnnxSimplifier 
+## ONNXSimplifier 
 
 [source](https://github.com/daquexian/onnx-simplifier/)
 
@@ -48,7 +51,7 @@ Though, even with less real-world efficiency this tool may reduce your model inf
 and its disk space consumption a little bit. Anyway, looking on model graph change during simplification it seems impressive.
 
 
-## OnnxRuntime graph optimizations
+## ONNXRuntime graph optimizations
 
 [source](https://onnxruntime.ai/docs/performance/model-optimizations/graph-optimizations.html)
 
@@ -78,7 +81,7 @@ They are run after graph partitioning and are only applied to nodes assigned to 
 I've decided to use [CRNN](https://arxiv.org/abs/1507.05717) for better experiment. It has convolutional, reccurrent and dense layers,
 so we'll be able to witness optimizations impact on different NN builing blocks.
 
-I didn't include torch2onnx converted model results without optimizations because I guess torch.onnx module automatically 
+I didn't include torch2onnx converted model results without optimizations because (I guess) torch.onnx module automatically 
 applies optimizations (results were identical)
 
 <pre>
@@ -101,3 +104,14 @@ applies optimizations (results were identical)
 | + ONNXSimplifier         |             |             |                 |            |               |                         |
 +--------------------------+-------------+-------------+-----------------+------------+---------------+-------------------------+
 </pre>
+
+Also make sure to check out my DNN model optimization repo where I implement and compare optimization techniques: https://github.com/K0mp0t/DNN_Model_optimization
+
+## Resources
+
+[ONNXOptimizer](https://github.com/onnx/optimizer)
+[ONNXSimplifier](https://github.com/daquexian/onnx-simplifier/)
+[Netron](https://github.com/lutzroeder/netron)
+[ONNXRuntime](https://github.com/microsoft/onnxruntime)
+[ONNXRuntime graph optimizations](https://onnxruntime.ai/docs/performance/model-optimizations/graph-optimizations.html)
+
